@@ -1,0 +1,106 @@
+; combus.inf
+; x64
+; Installation file (.inf) for the eGalax_eMPIA Touchscreen Enumerator.
+;
+; (c) Copyright 2011~2016 eGalax_eMPIA Technology Inc. 
+;
+
+[Version]
+Signature="$Windows NT$"
+Class = System
+ClassGuid = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider = "eGalax_eMPIA Technology Inc."
+CatalogFile = combus.cat
+DriverVer=06/29/2016, 1.4.0.6229
+
+
+[DestinationDirs]
+DefaultDestDir   = 12
+
+;
+; Driver information
+;
+
+[Manufacturer]
+%eGalax%   = eGalax.Mfg, NTamd64
+
+[eGalax.Mfg.NTamd64]
+%eGalax.DeviceDesc0% = combus, ROOT\COMBUS 
+
+
+;
+; General installation section
+;
+
+[combus]
+AddReg=combus.AddReg.x64
+
+; Copy the driver over
+CopyFiles=combus.CopyFiles.x64
+
+[combus.AddReg.x64]
+
+
+;
+; File sections
+;
+
+[combus.CopyFiles.x64]
+combus.sys
+
+;
+; Service Installation
+;
+
+[combus.Services]
+AddService = combus, 0x00000002 , combus_Service_Inst.x64, combus_EventLog_Inst.x64
+
+
+[combus_Service_Inst.x64]
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 0                  ; SERVICE_ERROR_IGNORE
+LoadOrderGroup = Pointer Port
+ServiceBinary  = %12%\combus.sys
+
+
+[combus_EventLog_Inst.x64]
+AddReg = combus_EventLog_AddReg.x64
+
+[combus_EventLog_AddReg.x64]
+HKR,,EventMessageFile,0x00020000,"%SystemRoot%\System32\IoLogMsg.dll;%SystemRoot%\System32\drivers\combus.sys"
+HKR,,TypesSupported,0x00010001,7
+
+;
+; Source file information
+;
+
+[SourceDisksNames]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+; Files for disk "eGalax_eMPIA Technology Inc. Installation Disk #1 
+combus.sys = 1,,
+
+
+[Strings]
+
+;
+; Non-Localizable Strings
+;
+
+REG_SZ         = 0x00000000
+REG_MULTI_SZ   = 0x00010000
+REG_EXPAND_SZ  = 0x00020000
+REG_BINARY     = 0x00000001
+REG_DWORD      = 0x00010001
+SERVICEROOT    = "System\CurrentControlSet\Services"
+
+;
+; Localizable Strings
+;
+
+eGalax.DeviceDesc0 = "eGalax_eMPIA Touchscreen Enumerator x64"
+eGalax = "eGalax_eMPIA Technology Inc."
+DiskId1 = "eGalax_eMPIA Technology Inc., Touchscreen Enumerator Installer x64"
+
